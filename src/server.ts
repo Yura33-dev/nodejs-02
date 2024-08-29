@@ -2,13 +2,14 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
 import { env } from './utils/env.js';
-import { getAllContacts, getContactById } from './services/contacts.js';
+import contactsRouter from './routers/contacts.js';
+import { notFoundHandler } from './middlewares/notFoundHandler.js';
+import { errorHandler } from './middlewares/errorHandler.js';
 
 export const initServer = () => {
   const app = express();
 
   app.use(cors());
-
   app.use(
     pino({
       transport: {
@@ -16,60 +17,18 @@ export const initServer = () => {
       },
     }),
   );
-
   app.use(express.json());
-
-  const PORT = Number(env('PORT', '3000'));
 
   app.get('/', (request: Request, response: Response) => {
     response.json({ message: 'Hello world!' });
   });
 
-  app.get('/contacts', async (request: Request, response: Response) => {
-    const contacts = await getAllContacts();
+  app.use(contactsRouter);
 
-    response.status(200).json({
-      status: 200,
-      message: 'Successfully found contacts!',
-      data: contacts,
-    });
-  });
+  app.use('*', notFoundHandler);
+  app.use(errorHandler);
 
-  app.get(
-    '/contacts/:contactId',
-    async (request: Request, response: Response) => {
-      const { contactId } = request.params;
-      const contact = await getContactById(contactId);
-
-      if (!contact) {
-        return response
-          .status(404)
-          .json({ status: 404, message: 'Contact did not find', data: null });
-      }
-
-      response.status(200).json({
-        status: 200,
-        message: `Successfully found contact with id ${contactId}!`,
-        data: contact,
-      });
-    },
-  );
-
-  app.use('*', (request: Request, response: Response) => {
-    response.status(404).json({
-      message: 'Not found',
-    });
-  });
-
-  app.use(
-    (error: { message: string }, request: Request, response: Response) => {
-      response.status(500).json({
-        message: 'Something went wrong',
-        error: error.message,
-      });
-    },
-  );
-
+  const PORT = Number(env('PORT', '3000'));
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT} port`);
   });

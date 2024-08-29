@@ -1,15 +1,5 @@
 import { model, Schema } from 'mongoose';
-
-interface IContact {
-  _id: string;
-  name: string;
-  phoneNumber: string;
-  email?: string | null;
-  isFavourite: boolean;
-  contactType: 'work' | 'home' | 'personal';
-  createdAt: Date;
-  updateAt: Date;
-}
+import { IContact } from '../../utils/types/contacts/contactsTypes.js';
 
 const contactSchema = new Schema<IContact>(
   {
