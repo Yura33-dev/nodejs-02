@@ -47,13 +47,11 @@ export const initServer = () => {
           .json({ status: 404, message: 'Contact did not find', data: null });
       }
 
-      response
-        .status(200)
-        .json({
-          status: 200,
-          message: `Successfully found contact with id ${contactId}!`,
-          data: contact,
-        });
+      response.status(200).json({
+        status: 200,
+        message: `Successfully found contact with id ${contactId}!`,
+        data: contact,
+      });
     },
   );
 

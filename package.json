@@ -10,6 +10,7 @@
     "dev": "nodemon --exec node --no-warnings=ExperimentalWarning --loader ts-node/esm ./src/index.ts",
     "lint": "npx eslint ./src",
     "format": "npx eslint ./src --fix",
+    "format-prettier": "yarn prettier --write src/",
     "prepare": "husky"
   },
   "keywords": [],
@@ -27,6 +28,7 @@
     "husky": "^9.1.5",
     "nodemon": "^3.1.4",
     "pino-pretty": "^11.2.2",
+    "prettier": "^3.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
