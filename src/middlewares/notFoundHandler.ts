@@ -1,7 +1,10 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
+import createHttpError from 'http-errors';
 
-export const notFoundHandler = (request: Request, response: Response) => {
-  response.status(404).json({
-    message: 'API route not found',
-  });
+export const notFoundHandler = (
+  request: Request,
+  response: Response,
+  next: NextFunction,
+) => {
+  return next(createHttpError(404, 'API route not found'));
 };
