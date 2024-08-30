@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose';
 import { IContact } from '../../utils/types/contacts/contactsTypes.js';
 
-const contactSchema = new Schema<IContact>(
+const contactsSchema = new Schema<IContact>(
   {
     name: {
       type: String,
@@ -17,6 +17,7 @@ const contactSchema = new Schema<IContact>(
     },
     isFavourite: {
       type: Boolean,
+      required: false,
       default: false,
     },
     contactType: {
@@ -32,4 +33,4 @@ const contactSchema = new Schema<IContact>(
   },
 );
 
-export const ContactsCollection = model<IContact>('contacts', contactSchema);
+export const ContactsCollection = model<IContact>('contacts', contactsSchema);
