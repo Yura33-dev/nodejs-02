@@ -7,19 +7,20 @@ import {
   removeContact,
   updateContact,
 } from '../services/contacts.js';
+import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 
 export const getAllContactsController = async (
   request: Request,
   response: Response,
 ) => {
-  const contacts = await getAllContacts();
+  const { page, perPage } = parsePaginationParams(request.query);
+
+  const contacts = await getAllContacts({ page, perPage });
 
   response.status(200).json({
     status: 200,
     message: 'Successfully found contacts!',
-    data: {
-      contacts,
-    },
+    ...contacts,
   });
 };
 
