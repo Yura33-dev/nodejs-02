@@ -18,7 +18,6 @@ export const getAllContactsController = async (
     status: 200,
     message: 'Successfully found contacts!',
     data: {
-      length: contacts.length,
       contacts,
     },
   });
