@@ -21,7 +21,7 @@ export const getAllContacts = async ({
   sortBy: string;
   isFavourite: boolean;
   type: contactType[] | false;
-}): Promise<{ contacts: IContact[] } & IPaginationData> => {
+}): Promise<{ data: IContact[] } & IPaginationData> => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
@@ -51,7 +51,7 @@ export const getAllContacts = async ({
   );
 
   return {
-    contacts,
+    data: contacts,
     ...paginationData,
   };
 };
