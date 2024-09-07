@@ -1,8 +1,3 @@
-export interface IRequestedPaginationParams {
-  page?: string;
-  perPage?: string;
-}
-
 export interface IPaginationData {
   page: number;
   perPage: number;

@@ -1,15 +1,12 @@
-import { IRequestedPaginationParams } from './types/paginationTypes';
-
-const DEFAULT_PAGE = '1';
-const DEFAULT_PERPAGE = '3';
+import { IRequestedQueryParams } from './types/requestedQueryParams.js';
 
 export const parsePaginationParams = (
-  query: IRequestedPaginationParams,
+  query: IRequestedQueryParams,
 ): { page: number; perPage: number } => {
-  const { page = DEFAULT_PAGE, perPage = DEFAULT_PERPAGE } = query;
+  const { page, perPage } = query;
 
-  const parsedPage = parseNumber(page, 1);
-  const parsedPerPage = parseNumber(perPage, 5);
+  const parsedPage = parseNumber(page ?? '1', 1);
+  const parsedPerPage = parseNumber(perPage ?? '5', 5);
 
   return {
     page: parsedPage,
@@ -21,9 +18,6 @@ const parseNumber = (
   numberFromRequest: string,
   defaultValue: number,
 ): number => {
-  const isString = typeof numberFromRequest === 'string';
-  if (!isString) return defaultValue;
-
   const parsedNumber = parseInt(numberFromRequest);
 
   if (Number.isNaN(parsedNumber)) {

@@ -1,4 +1,4 @@
-import { IPaginationData } from './types/paginationTypes';
+import { IPaginationData } from './types/paginationTypes.js';
 
 export const calculatePaginationData = (
   totalCount: number,
