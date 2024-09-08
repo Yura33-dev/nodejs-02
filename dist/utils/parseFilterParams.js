@@ -11,21 +11,11 @@ export const parseFilterParams = (query) => {
 const parseFavourite = (valueFromRequest) => valueFromRequest === 'true' ? true : false;
 const parseType = (valueFromRequest) => {
     const validTypes = [contactType.HOME, contactType.PERSONAL, contactType.WORK];
-    const parsedFilters = [];
-    if (Array.isArray(valueFromRequest) && valueFromRequest.length > 0) {
-        valueFromRequest.forEach((value) => {
-            if (validTypes.includes(value)) {
-                parsedFilters.push(value);
-            }
-        });
-    }
-    else if (typeof valueFromRequest === 'string') {
-        if (validTypes.includes(valueFromRequest)) {
-            parsedFilters.push(valueFromRequest);
-        }
-        else {
-            return false;
-        }
-    }
-    return parsedFilters;
+    if (!valueFromRequest)
+        return false;
+    const values = Array.isArray(valueFromRequest)
+        ? valueFromRequest
+        : [valueFromRequest];
+    const parsedFilters = values.filter((value) => validTypes.includes(value));
+    return parsedFilters.length > 0 ? parsedFilters : false;
 };
