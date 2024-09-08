@@ -24,21 +24,12 @@ const parseType = (
   valueFromRequest: contactType | contactType[] | undefined,
 ): contactType[] | false => {
   const validTypes = [contactType.HOME, contactType.PERSONAL, contactType.WORK];
-  const parsedFilters: contactType[] = [];
 
-  if (Array.isArray(valueFromRequest) && valueFromRequest.length > 0) {
-    valueFromRequest.forEach((value) => {
-      if (validTypes.includes(value as contactType)) {
-        parsedFilters.push(value);
-      }
-    });
-  } else if (typeof valueFromRequest === 'string') {
-    if (validTypes.includes(valueFromRequest as contactType)) {
-      parsedFilters.push(valueFromRequest);
-    } else {
-      return false;
-    }
-  }
+  if (!valueFromRequest) return false;
 
-  return parsedFilters;
+  const values = Array.isArray(valueFromRequest)
+    ? valueFromRequest
+    : [valueFromRequest];
+  const parsedFilters = values.filter((value) => validTypes.includes(value));
+  return parsedFilters.length > 0 ? parsedFilters : false;
 };
