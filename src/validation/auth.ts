@@ -8,15 +8,32 @@ export const registerUserSchema = Joi.object({
     'any.required': 'Name is a required field',
   }),
   email: Joi.string()
+    .required()
     .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
     .messages({
       'string.base': 'Email should be a string type',
       'string.email': 'Email is invalid',
+      'any.required': 'Email is a required field',
     }),
   password: Joi.string().min(7).max(30).required().messages({
     'string.base': 'Password should be a string type',
     'string.min': 'Password should have at least 7 symbols ',
     'string.max': 'Password should have max 30 symbols',
+    'any.required': 'Password is a required field',
+  }),
+});
+
+export const loginUserSchema = Joi.object({
+  email: Joi.string()
+    .required()
+    .email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+    .messages({
+      'string.base': 'Email should be a string type',
+      'string.email': 'Email is invalid',
+      'any.required': 'Email is a required field',
+    }),
+  password: Joi.string().required().messages({
+    'string.base': 'Password should be a string type',
     'any.required': 'Password is a required field',
   }),
 });
