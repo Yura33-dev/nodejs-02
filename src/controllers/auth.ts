@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { loginUser, registerUser } from '../services/auth.js';
+import { loginUser, logoutUser, registerUser } from '../services/auth.js';
 import { ONE_DAY } from '../constants/index.js';
 
 export const registerUserController = async (
@@ -38,4 +38,18 @@ export const loginUserController = async (
       accessToken: session.accessToken,
     },
   });
+};
+
+export const logoutUserController = async (
+  request: Request,
+  response: Response,
+) => {
+  if (request.cookies.sessionId) {
+    await logoutUser(request.cookies.sessionId);
+  }
+
+  response.clearCookie('sessionId');
+  response.clearCookie('refreshToken');
+
+  response.status(204).send();
 };
