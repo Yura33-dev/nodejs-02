@@ -84,7 +84,10 @@ export const updateContact = async (
   const contact = await ContactsCollection.findOneAndUpdate(
     { _id: contactId },
     payload,
-    { new: false, includeResultMetadata: false },
+    {
+      new: true,
+      includeResultMetadata: false,
+    },
   );
 
   if (!contact) return null;
