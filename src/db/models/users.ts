@@ -13,4 +13,10 @@ const userSchema = new Schema<IUser>(
   },
 );
 
+userSchema.methods.toJSON = function (): Omit<IUser, 'password'> {
+  const obj: IUser = this.toObject();
+  delete (obj as Partial<IUser>).password;
+  return obj;
+};
+
 export const UsersCollection = model('users', userSchema);
