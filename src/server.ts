@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import pino from 'pino-http';
+import cookieParser from 'cookie-parser';
 import { env } from './utils/env.js';
 import router from './routers/index.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
@@ -18,6 +19,7 @@ export const initServer = () => {
     }),
   );
   app.use(express.json());
+  app.use(cookieParser());
 
   app.get('/', (request: Request, response: Response) => {
     response.json({ message: 'Hello world!' });
