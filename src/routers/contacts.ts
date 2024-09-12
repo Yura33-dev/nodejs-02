@@ -21,22 +21,22 @@ router.use(authenticate);
 
 router.get('/', controllerWrapper(getAllContactsController));
 router.get(
-  '/contacts/:contactId',
+  '/:contactId',
   validateId,
   controllerWrapper(getContactByIdController),
 );
 router.post(
-  '/contacts',
+  '/',
   validateBody(createContactSchema),
   controllerWrapper(createContactController),
 );
 router.delete(
-  '/contacts/:contactId',
+  '/:contactId',
   validateId,
   controllerWrapper(removeContactController),
 );
 router.patch(
-  '/contacts/:contactId',
+  '/:contactId',
   validateId,
   validateBody(updateContactSchema),
   controllerWrapper(updateContactController),

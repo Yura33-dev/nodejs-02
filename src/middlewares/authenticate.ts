@@ -2,11 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import { SessionsCollection } from '../db/models/sessions.js';
 import { UsersCollection } from '../db/models/users.js';
-import { IUser } from '../utils/types/users/usersTypes.js';
-
-interface AuthenticatedRequest extends Request {
-  user: IUser;
-}
+import { AuthenticatedRequest } from '../utils/types/AuthenticatedRequest.js';
 
 export const authenticate = async (
   request: Request,
