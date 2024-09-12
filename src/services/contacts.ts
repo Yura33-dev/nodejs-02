@@ -61,7 +61,7 @@ export const getContactById = async (
   contactId: string,
   user: IUser,
 ): Promise<IContact | null> => {
-  const contact = await ContactsCollection.findById({
+  const contact = await ContactsCollection.findOne({
     _id: contactId,
     userId: user._id,
   });
@@ -73,7 +73,6 @@ export const createContact = async (
   user: IUser,
 ): Promise<IContact> => {
   payload.userId = user._id;
-  console.log('CREATE CONTACT', payload);
   const newContact = await ContactsCollection.create(payload);
   return newContact;
 };
