@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongoose';
+
 export interface ISession {
-  _id: string;
+  _id: ObjectId;
   userId: string | undefined;
   accessToken: string;
   refreshToken: string;

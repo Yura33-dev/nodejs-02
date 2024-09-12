@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongoose';
+
 export interface IContact {
-  _id: string;
+  _id: ObjectId;
   createdAt: Date;
   updateAt: Date;
   name: string;
@@ -7,4 +9,5 @@ export interface IContact {
   email?: string | null;
   isFavourite: boolean;
   contactType: 'work' | 'home' | 'personal';
+  userId: ObjectId;
 }
