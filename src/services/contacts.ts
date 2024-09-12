@@ -6,26 +6,27 @@ import {
   sortOrderEnum,
 } from '../utils/types/requestedQueryParams.js';
 import { IPaginationData } from '../utils/types/paginationTypes.js';
+import { IUser } from '../utils/types/users/usersTypes.js';
 
-export const getAllContacts = async ({
-  page,
-  perPage,
-  sortOrder,
-  sortBy,
-  isFavourite,
-  type,
-}: {
+interface getAllContactsArgs {
   page: number;
   perPage: number;
   sortOrder: sortOrderEnum;
   sortBy: string;
   isFavourite: boolean;
   type: contactType[] | false;
-}): Promise<{ data: IContact[] } & IPaginationData> => {
+}
+
+export const getAllContacts = async (
+  { page, perPage, sortOrder, sortBy, isFavourite, type }: getAllContactsArgs,
+  user: IUser,
+): Promise<{ data: IContact[] } & IPaginationData> => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const contactsQuery = ContactsCollection.find();
+
+  contactsQuery.where('userId').equals(user._id);
 
   if (isFavourite) {
     contactsQuery.where('isFavourite').equals(isFavourite);
@@ -58,31 +59,43 @@ export const getAllContacts = async ({
 
 export const getContactById = async (
   contactId: string,
+  user: IUser,
 ): Promise<IContact | null> => {
-  const contact = await ContactsCollection.findById(contactId);
+  const contact = await ContactsCollection.findById({
+    _id: contactId,
+    userId: user._id,
+  });
   return contact;
 };
 
 export const createContact = async (
   payload: Omit<IContact, '_id' | 'createdAt' | 'updatedAt'>,
+  user: IUser,
 ): Promise<IContact> => {
+  payload.userId = user._id;
+  console.log('CREATE CONTACT', payload);
   const newContact = await ContactsCollection.create(payload);
   return newContact;
 };
 
 export const removeContact = async (
   contactId: string,
+  user: IUser,
 ): Promise<IContact | null> => {
-  const contact = await ContactsCollection.findOneAndDelete({ _id: contactId });
+  const contact = await ContactsCollection.findOneAndDelete({
+    _id: contactId,
+    userId: user._id,
+  });
   return contact;
 };
 
 export const updateContact = async (
   contactId: string,
   payload: Partial<Omit<IContact, '_id' | 'createdAt' | 'updatedAt'>>,
+  user: IUser,
 ): Promise<IContact | null> => {
   const contact = await ContactsCollection.findOneAndUpdate(
-    { _id: contactId },
+    { _id: contactId, userId: user._id },
     payload,
     {
       new: true,
