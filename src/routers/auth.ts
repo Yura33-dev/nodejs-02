@@ -5,6 +5,7 @@ import { controllerWrapper } from '../utils/controllerWrapper.js';
 import {
   loginUserController,
   logoutUserController,
+  refreshUserSessionController,
   registerUserController,
 } from '../controllers/auth.js';
 
@@ -23,5 +24,7 @@ router.post(
 );
 
 router.post('/logout', controllerWrapper(logoutUserController));
+
+router.post('/refresh', controllerWrapper(refreshUserSessionController));
 
 export default router;

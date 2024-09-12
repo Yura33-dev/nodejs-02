@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
-import { loginUser, logoutUser, registerUser } from '../services/auth.js';
+import {
+  loginUser,
+  logoutUser,
+  refreshUsersSession,
+  registerUser,
+} from '../services/auth.js';
 import { ONE_DAY } from '../constants/index.js';
+import { ISession } from '../utils/types/sessionType.js';
 
 export const registerUserController = async (
   request: Request,
@@ -52,4 +58,55 @@ export const logoutUserController = async (
   response.clearCookie('refreshToken');
 
   response.status(204).send();
+};
+
+const setupSession = (response: Response, session: ISession) => {
+  response.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+  response.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + ONE_DAY),
+  });
+};
+
+export const refreshUserSessionController = async (
+  request: Request,
+  response: Response,
+) => {
+  const {
+    _id,
+    userId,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil,
+    refreshTokenValidUntil,
+    createdAt,
+    updatedAt,
+  } = await refreshUsersSession({
+    sessionId: request.cookies.sessionId,
+    refreshToken: request.cookies.refreshToken,
+  });
+
+  const normalizedSession: ISession = {
+    _id: _id.toString(),
+    userId: userId ? userId.toString() : undefined,
+    accessToken,
+    refreshToken,
+    accessTokenValidUntil,
+    refreshTokenValidUntil,
+    createdAt,
+    updatedAt,
+  };
+
+  setupSession(response, normalizedSession);
+
+  response.json({
+    status: 200,
+    message: 'Successfully refreshed a session!',
+    data: {
+      accessToken,
+    },
+  });
 };
