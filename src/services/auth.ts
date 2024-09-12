@@ -5,6 +5,7 @@ import { UsersCollection } from '../db/models/users.js';
 import { IUser } from '../utils/types/users/usersTypes.js';
 import { SessionsCollection } from '../db/models/sessions.js';
 import { FIFTEEN_MINUTES, ONE_DAY } from '../constants/index.js';
+import { ISession } from '../utils/types/sessionType.js';
 
 export const registerUser = async (
   payload: Omit<IUser, '_id' | 'createdAt' | 'updatedAt'>,
@@ -72,7 +73,7 @@ export const refreshUsersSession = async ({
   sessionId: string;
   refreshToken: string;
 }) => {
-  const session = await SessionsCollection.findOne({
+  const session: ISession | null = await SessionsCollection.findOne({
     _id: sessionId,
     refreshToken,
   });

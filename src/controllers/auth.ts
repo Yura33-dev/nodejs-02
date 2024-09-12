@@ -75,38 +75,20 @@ export const refreshUserSessionController = async (
   request: Request,
   response: Response,
 ) => {
-  const {
-    _id,
-    userId,
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil,
-    refreshTokenValidUntil,
-    createdAt,
-    updatedAt,
-  } = await refreshUsersSession({
+  const session = await refreshUsersSession({
     sessionId: request.cookies.sessionId,
     refreshToken: request.cookies.refreshToken,
   });
 
-  const normalizedSession: ISession = {
-    _id: _id.toString(),
-    userId: userId ? userId.toString() : undefined,
-    accessToken,
-    refreshToken,
-    accessTokenValidUntil,
-    refreshTokenValidUntil,
-    createdAt,
-    updatedAt,
-  };
+  const sessionData = session.toObject() as unknown as ISession;
 
-  setupSession(response, normalizedSession);
+  setupSession(response, sessionData);
 
   response.json({
     status: 200,
     message: 'Successfully refreshed a session!',
     data: {
-      accessToken,
+      accessToken: session.accessToken,
     },
   });
 };
