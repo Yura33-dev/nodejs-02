@@ -1,12 +1,19 @@
 import { Router } from 'express';
 import { validateBody } from '../middlewares/validateBody.js';
-import { loginUserSchema, registerUserSchema } from '../validation/auth.js';
+import {
+  loginUserSchema,
+  registerUserSchema,
+  requestResetEmailSchema,
+  resetPasswordSchema,
+} from '../validation/auth.js';
 import { controllerWrapper } from '../utils/controllerWrapper.js';
 import {
   loginUserController,
   logoutUserController,
   refreshUserSessionController,
   registerUserController,
+  requestResetEmailController,
+  resetPasswordController,
 } from '../controllers/auth.js';
 
 const router = Router();
@@ -26,5 +33,17 @@ router.post(
 router.post('/logout', controllerWrapper(logoutUserController));
 
 router.post('/refresh', controllerWrapper(refreshUserSessionController));
+
+router.post(
+  '/reset-email',
+  validateBody(requestResetEmailSchema),
+  controllerWrapper(requestResetEmailController),
+);
+
+router.post(
+  '/reset-password',
+  validateBody(resetPasswordSchema),
+  controllerWrapper(resetPasswordController),
+);
 
 export default router;
