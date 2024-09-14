@@ -12,6 +12,8 @@ import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { AuthenticatedRequest } from '../utils/types/AuthenticatedRequest.js';
 import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { env } from '../utils/env.js';
+import { saveFileToCloud } from '../utils/saveFileToCloudinary.js';
 
 export const getAllContactsController = async (
   request: AuthenticatedRequest,
@@ -66,7 +68,11 @@ export const createContactController = async (
   let photoUrl: string | undefined;
 
   if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloud(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
 
   const contact = await createContact(
@@ -107,7 +113,11 @@ export const updateContactController = async (
   let photoUrl: string | undefined;
 
   if (photo) {
-    photoUrl = await saveFileToUploadDir(photo);
+    if (env('ENABLE_CLOUDINARY') === 'true') {
+      photoUrl = await saveFileToCloud(photo);
+    } else {
+      photoUrl = await saveFileToUploadDir(photo);
+    }
   }
 
   const contact = await updateContact(
