@@ -27,6 +27,7 @@ const contactsSchema = new Schema<IContact>(
       default: 'personal',
     },
     userId: { type: Schema.Types.ObjectId, ref: 'users' },
+    photo: { type: String, default: null },
   },
   {
     timestamps: true,

@@ -10,4 +10,5 @@ export interface IContact {
   isFavourite: boolean;
   contactType: 'work' | 'home' | 'personal';
   userId: ObjectId;
+  photo: string;
 }
