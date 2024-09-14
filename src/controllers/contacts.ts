@@ -11,6 +11,7 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 import { AuthenticatedRequest } from '../utils/types/AuthenticatedRequest.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
 
 export const getAllContactsController = async (
   request: AuthenticatedRequest,
@@ -61,7 +62,17 @@ export const createContactController = async (
   request: AuthenticatedRequest,
   response: Response,
 ) => {
-  const contact = await createContact(request.body, request.user);
+  const photo = request.file;
+  let photoUrl: string | undefined;
+
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+  const contact = await createContact(
+    { ...request.body, photo: photoUrl },
+    request.user,
+  );
 
   response.status(201).json({
     status: 201,
@@ -92,8 +103,18 @@ export const updateContactController = async (
   next: NextFunction,
 ) => {
   const { contactId } = request.params;
+  const photo = request.file;
+  let photoUrl: string | undefined;
 
-  const contact = await updateContact(contactId, request.body, request.user);
+  if (photo) {
+    photoUrl = await saveFileToUploadDir(photo);
+  }
+
+  const contact = await updateContact(
+    contactId,
+    { ...request.body, photo: photoUrl },
+    request.user,
+  );
 
   if (!contact) {
     return next(createHttpError(404, 'Contact did not find'));
