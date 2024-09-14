@@ -6,6 +6,7 @@ import { env } from './utils/env.js';
 import router from './routers/index.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
+import { UPLOAD_DIR } from './constants/index.js';
 
 export const initServer = () => {
   const app = express();
@@ -20,6 +21,7 @@ export const initServer = () => {
   );
   app.use(express.json());
   app.use(cookieParser());
+  app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.get('/', (request: Request, response: Response) => {
     response.json({ message: 'Hello world!' });
