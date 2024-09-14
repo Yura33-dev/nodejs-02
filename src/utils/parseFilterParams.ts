@@ -5,7 +5,7 @@ import {
 
 export const parseFilterParams = (
   query: IRequestedQueryParams,
-): { isFavourite: boolean; type: contactType[] | false } => {
+): { isFavourite: boolean | 'none'; type: contactType[] | false } => {
   const { isFavourite, type } = query;
 
   const parsedIsFavourite = parseFavourite(isFavourite);
@@ -17,8 +17,13 @@ export const parseFilterParams = (
   };
 };
 
-const parseFavourite = (valueFromRequest: string | undefined): boolean =>
-  valueFromRequest === 'true' ? true : false;
+const parseFavourite = (
+  valueFromRequest: string | undefined,
+): boolean | 'none' => {
+  if (valueFromRequest === 'true') return true;
+  else if (valueFromRequest === 'false') return false;
+  return 'none';
+};
 
 const parseType = (
   valueFromRequest: contactType | contactType[] | undefined,

@@ -13,7 +13,7 @@ interface getAllContactsArgs {
   perPage: number;
   sortOrder: sortOrderEnum;
   sortBy: string;
-  isFavourite: boolean;
+  isFavourite: boolean | 'none';
   type: contactType[] | false;
 }
 
@@ -28,7 +28,7 @@ export const getAllContacts = async (
 
   contactsQuery.where('userId').equals(user._id);
 
-  if (isFavourite) {
+  if (isFavourite !== 'none') {
     contactsQuery.where('isFavourite').equals(isFavourite);
   }
 
