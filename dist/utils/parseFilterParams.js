@@ -8,7 +8,13 @@ export const parseFilterParams = (query) => {
         type: parsedType,
     };
 };
-const parseFavourite = (valueFromRequest) => valueFromRequest === 'true' ? true : false;
+const parseFavourite = (valueFromRequest) => {
+    if (valueFromRequest === 'true')
+        return true;
+    else if (valueFromRequest === 'false')
+        return false;
+    return 'none';
+};
 const parseType = (valueFromRequest) => {
     const validTypes = [contactType.HOME, contactType.PERSONAL, contactType.WORK];
     if (!valueFromRequest)

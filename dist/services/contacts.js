@@ -5,7 +5,7 @@ export const getAllContacts = async ({ page, perPage, sortOrder, sortBy, isFavou
     const skip = (page - 1) * perPage;
     const contactsQuery = ContactsCollection.find();
     contactsQuery.where('userId').equals(user._id);
-    if (isFavourite) {
+    if (isFavourite !== 'none') {
         contactsQuery.where('isFavourite').equals(isFavourite);
     }
     if (type && type.length > 0) {
