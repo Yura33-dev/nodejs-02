@@ -3,6 +3,9 @@ import { createContact, getAllContacts, getContactById, removeContact, updateCon
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToUploadDir } from '../utils/saveFileToUploadDir.js';
+import { env } from '../utils/env.js';
+import { saveFileToCloud } from '../utils/saveFileToCloudinary.js';
 export const getAllContactsController = async (request, response) => {
     const { page, perPage } = parsePaginationParams(request.query);
     const { sortBy, sortOrder } = parseSortParams(request.query);
@@ -34,7 +37,17 @@ export const getContactByIdController = async (request, response) => {
     });
 };
 export const createContactController = async (request, response) => {
-    const contact = await createContact(request.body, request.user);
+    const photo = request.file;
+    let photoUrl;
+    if (photo) {
+        if (env('ENABLE_CLOUDINARY') === 'true') {
+            photoUrl = await saveFileToCloud(photo);
+        }
+        else {
+            photoUrl = await saveFileToUploadDir(photo);
+        }
+    }
+    const contact = await createContact({ ...request.body, photo: photoUrl }, request.user);
     response.status(201).json({
         status: 201,
         message: 'Contact has been added',
@@ -51,7 +64,17 @@ export const removeContactController = async (request, response, next) => {
 };
 export const updateContactController = async (request, response, next) => {
     const { contactId } = request.params;
-    const contact = await updateContact(contactId, request.body, request.user);
+    const photo = request.file;
+    let photoUrl;
+    if (photo) {
+        if (env('ENABLE_CLOUDINARY') === 'true') {
+            photoUrl = await saveFileToCloud(photo);
+        }
+        else {
+            photoUrl = await saveFileToUploadDir(photo);
+        }
+    }
+    const contact = await updateContact(contactId, { ...request.body, photo: photoUrl }, request.user);
     if (!contact) {
         return next(createHttpError(404, 'Contact did not find'));
     }

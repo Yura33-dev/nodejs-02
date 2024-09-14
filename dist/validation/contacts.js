@@ -33,6 +33,9 @@ export const createContactSchema = Joi.object({
     userId: Joi.string().default(null).messages({
         'string.base': 'userId should be a string type',
     }),
+    photo: Joi.string().default(null).messages({
+        'string.base': 'Photo should be a string type',
+    }),
 });
 export const updateContactSchema = Joi.object({
     name: Joi.string().min(2).max(16).messages({
@@ -57,5 +60,8 @@ export const updateContactSchema = Joi.object({
     contactType: Joi.string().valid('work', 'home', 'personal').messages({
         'string.base': 'ContactType field should be a string type',
         'any.only': 'ContactType field should be "work", "home" or "personal"',
+    }),
+    photo: Joi.string().default(null).messages({
+        'string.base': 'Photo should be a string type',
     }),
 });
