@@ -34,9 +34,6 @@ export const createContactSchema = Joi.object<
       'any.only': 'ContactType field should be "work", "home" or "personal"',
       'any.required': 'ContactType is a required field',
     }),
-  userId: Joi.string().default(null).messages({
-    'string.base': 'userId should be a string type',
-  }),
   photo: Joi.string().default(null).messages({
     'string.base': 'Photo should be a string type',
   }),
