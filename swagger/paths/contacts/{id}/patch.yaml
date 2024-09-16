@@ -12,6 +12,37 @@ parameters:
     schema:
       type: string
       example: '65ca67e7ae7f10c88b598384'
+requestBody:
+  content:
+    multipart/form-data:
+      schema:
+        type: object
+        properties:
+          name:
+            description: "Contacts's name"
+            type: string
+            example: 'John Doe'
+          phoneNumber:
+            description: "Contacts's phone number"
+            type: string
+            example: +3812345678
+          email:
+            description: "Contacts's email"
+            type: string
+            example: example@mail.com
+          isFavourite:
+            description: 'Contact marked as favourite in list'
+            type: boolean
+            example: false
+          contactType:
+            description: 'Type of contact'
+            type: string
+            enum: ['personal', 'work', 'home']
+            example: personal
+          photo:
+            description: "Contacts's photo"
+            type: string
+            example: 'https://res.cloudinary.com/deljnwi3o/image/upload/v1726314978/yq5fdyoconyda9xrsxmw.png'
 responses:
   '200':
     description: 'Edit contact by id'
