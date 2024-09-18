@@ -13,7 +13,6 @@ requestBody:
         required:
           - name
           - phoneNumber
-          - email
           - isFavourite
           - contactType
         properties:
@@ -39,7 +38,7 @@ requestBody:
             enum: ['personal', 'work', 'home']
             example: personal
           photo:
-            description: "Contacts's photo"
+            description: "Link to contacts's photo"
             type: string
             example: 'https://res.cloudinary.com/deljnwi3o/image/upload/v1726314978/yq5fdyoconyda9xrsxmw.png'
 responses:
