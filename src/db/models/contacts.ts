@@ -14,6 +14,7 @@ const contactsSchema = new Schema<IContact>(
     email: {
       type: String,
       required: false,
+      default: null,
     },
     isFavourite: {
       type: Boolean,

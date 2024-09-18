@@ -5,6 +5,7 @@ export interface IUser {
   createdAt: Date;
   updateAt: Date;
   name: string;
-  email: string;
+  email: string | null;
+  photo: string | null;
   password: string;
 }
