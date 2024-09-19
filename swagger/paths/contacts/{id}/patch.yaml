@@ -42,7 +42,7 @@ requestBody:
           photo:
             description: "Contacts's photo"
             type: string
-            example: 'https://res.cloudinary.com/deljnwi3o/image/upload/v1726314978/yq5fdyoconyda9xrsxmw.png'
+            format: binary
 responses:
   '200':
     description: 'Edit contact by id'
