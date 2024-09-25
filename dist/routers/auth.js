@@ -8,6 +8,6 @@ router.post('/register', validateBody(registerUserSchema), controllerWrapper(reg
 router.post('/login', validateBody(loginUserSchema), controllerWrapper(loginUserController));
 router.post('/logout', controllerWrapper(logoutUserController));
 router.post('/refresh', controllerWrapper(refreshUserSessionController));
-router.post('/reset-email', validateBody(requestResetEmailSchema), controllerWrapper(requestResetEmailController));
-router.post('/reset-password', validateBody(resetPasswordSchema), controllerWrapper(resetPasswordController));
+router.post('/send-reset-email', validateBody(requestResetEmailSchema), controllerWrapper(requestResetEmailController));
+router.post('/reset-pwd', validateBody(resetPasswordSchema), controllerWrapper(resetPasswordController));
 export default router;
