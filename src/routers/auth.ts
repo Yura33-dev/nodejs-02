@@ -35,13 +35,13 @@ router.post('/logout', controllerWrapper(logoutUserController));
 router.post('/refresh', controllerWrapper(refreshUserSessionController));
 
 router.post(
-  '/reset-email',
+  '/send-reset-email',
   validateBody(requestResetEmailSchema),
   controllerWrapper(requestResetEmailController),
 );
 
 router.post(
-  '/reset-password',
+  '/reset-pwd',
   validateBody(resetPasswordSchema),
   controllerWrapper(resetPasswordController),
 );
